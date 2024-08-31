@@ -25,9 +25,27 @@ public struct StringifyMacro: ExpressionMacro {
     }
 }
 
+public struct GoogleAnalyticsEventName: ExpressionMacro {
+    public static func expansion(
+        of node: some FreestandingMacroExpansionSyntax,
+        in context: some MacroExpansionContext
+    ) -> ExprSyntax {
+        guard let argument = node.argumentList.first?.expression else {
+            fatalError("compiler bug: the macro does not have any arguments")
+        }
+        let name = "\(argument.description)"
+        guard name.count <= 40 else {
+            preconditionFailure("compiler bug: Google Analytics Event Name exceeds 40 characters")
+//            fatalError("compiler bug: Google Analytics Event Name exceeds 40 characters")
+        }
+
+        return "\(raw: name)"
+    }
+}
+
 @main
 struct GAMacrosPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        StringifyMacro.self,
+        GoogleAnalyticsEventName.self,
     ]
 }

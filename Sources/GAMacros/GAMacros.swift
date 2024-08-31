@@ -9,3 +9,6 @@
 /// produces a tuple `(x + y, "x + y")`.
 @freestanding(expression)
 public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "GAMacrosMacros", type: "StringifyMacro")
+
+@freestanding(expression)
+public macro googleAnalyticsEventName<T>(_ value: T) -> String = #externalMacro(module: "GAMacrosMacros", type: "GoogleAnalyticsEventName")
